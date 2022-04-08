@@ -2,13 +2,17 @@ import { ApolloServer } from "apollo-server-express";
 import * as Express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
-
 import * as Mongoose from "mongoose";
+
+//Environment variables Setups for mongodb
+require("dotenv").config();
+
+// async function to bootstrap my application
 async function startServer() {
   require("dotenv").config(__dirname + ".env");
 
   const schema = await buildSchema({
-    resolvers: [],
+    resolvers: [],// resolvers coming here
     emitSchemaFile: true,
   });
 
@@ -18,10 +22,10 @@ async function startServer() {
   const MONGO_PASS = process.env.MONGODB_PASS;
 
   Mongoose.connect(
-    `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@cluster0-xv4mh.mongodb.net/test?retryWrites=true&w=majority`,
+    `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@cluster0.k603m.mongodb.net/test`,
     {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
     }
   )
     .then((res) => {
