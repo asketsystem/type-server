@@ -1,0 +1,23 @@
+{
+  "name": "type-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev --respawn src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asketsystem/type-server.git"
+  },
+  "author": "Franck Asket",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asketsystem/type-server/issues"
+  },
+  "homepage": "https://github.com/asketsystem/type-server#readme",
+  "devDependencies": {
+    "@types/mongoose": "^5.11.97"
+  }
+}

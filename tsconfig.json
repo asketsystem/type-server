@@ -29,11 +29,13 @@
     "baseUrl": ".",
     "rootDir": "src"
   },
+  "dev": "ts-node-dev --respawn src/server.ts",
   "exclude": [
     "node_modules"
   ],
   "include": [
     "./src/**/*.tsx",
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    
   ]
 }

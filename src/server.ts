@@ -12,7 +12,7 @@ async function startServer() {
   require("dotenv").config(__dirname + ".env");
 
   const schema = await buildSchema({
-    resolvers: [],// resolvers coming here
+    resolvers: [__dirname + "/resolvers/**/*.{ts,js}"],
     emitSchemaFile: true,
   });
 
