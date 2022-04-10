@@ -19,5 +19,8 @@
   "homepage": "https://github.com/asketsystem/type-server#readme",
   "devDependencies": {
     "@types/mongoose": "^5.11.97"
+  },
+  "dependencies": {
+    "dotenv": "^15.3.0"
   }
 }

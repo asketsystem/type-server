@@ -3,6 +3,7 @@ import * as Express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import * as Mongoose from "mongoose";
+import { UserResolver } from "./UserService/UserResolver";
 
 //Environment variables Setups for mongodb
 require("dotenv").config();
@@ -12,7 +13,7 @@ async function startServer() {
   require("dotenv").config(__dirname + ".env");
 
   const schema = await buildSchema({
-    resolvers: [__dirname + "/resolvers/**/*.{ts,js}"],
+    resolvers: [UserResolver],
     emitSchemaFile: true,
   });
 
@@ -22,13 +23,9 @@ async function startServer() {
   const MONGO_PASS = process.env.MONGODB_PASS;
 
   Mongoose.connect(
-    `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@cluster0.k603m.mongodb.net/test`,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    }
+    `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@cluster0.k603m.mongodb.net/test`
   )
-    .then((res) => {
+    .then(() => {
       console.log("Mongodb is connected successfully");
 
       const server = new ApolloServer({
@@ -47,6 +44,8 @@ async function startServer() {
     .catch((err) => {
       console.log(err);
     });
+
+    
 }
 
 startServer();
