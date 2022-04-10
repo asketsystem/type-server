@@ -1,35 +1,46 @@
-import { Arg, FieldResolver,Query,Resolver, Mutation, Ctx, Root } from "type-graphql";
-import { IUser, IUserResponse } from "./UserModel";
-import * as bcrypt from "bcryptjs";
+import {
+  Arg,
+  FieldResolver,
+  Query,
+  Mutation,
+  Resolver,
+  Ctx,
+  Root,
+} from "type-graphql";
 import UserSchema from "./UserSchema";
 import UserResponse from "./UserResponse";
-
+import { IUser, IUserResponse } from "./UserModel";
+import * as bcrypt from "bcryptjs";
+import { UserService } from "./UserService";
 
 @Resolver((of) => UserSchema)
 export class UserResolver {
+  constructor(private readonly userService: UserService) {}
 
-    // @Query(() => String)
-    // sample(): string {
-    //     return "Hello World";
-    // }
+  @Query((returns) => UserSchema, { nullable: true })
+  async userByID(
+    @Arg("id") id: string,
+    @Ctx() ctx: any
+  ): Promise<IUser | null> {
+    const user = await this.userService.getById(id);
+    return user;
+  }
 
-   @Query((returns) => UserResponse)
+  @Query((returns) => UserResponse)
   async loginUser(
     @Arg("email") email: string,
     @Arg("password") password: string,
     @Ctx() ctx: any
   ): Promise<UserResponse> {
-    const user = await ctx.userModel.findOne({
-      email: email,
-    });
+    const user = await this.userService.getByEmail(email);
 
     if (user) {
-      const { err } = await bcrypt.compare(password, user.password);
+      const response = await bcrypt.compare(password, user.password);
 
-      if (!!err) {
+      if (!response) {
         return {
           success: false,
-          error: "Invalid Credentials",
+          error: "Invalid Credetials",
           data: null,
         };
       } else {
@@ -47,5 +58,22 @@ export class UserResolver {
       };
     }
   }
-}
 
+  @Mutation(() => UserSchema)
+  async registerUser(
+    @Arg("name") name: string,
+    @Arg("email") email: string,
+    @Arg("password") password: string,
+    @Ctx() ctx: any
+  ): Promise<IUser> {
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const user = await this.userService.insertUser({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    return user;
+  }
+}
