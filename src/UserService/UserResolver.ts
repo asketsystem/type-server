@@ -2,6 +2,7 @@ import { Arg, FieldResolver,Query,Resolver, Mutation, Ctx, Root } from "type-gra
 import { IUser, IUserResponse } from "./UserModel";
 import * as bcrypt from "bcryptjs";
 import UserSchema from "./UserSchema";
+import UserResponse from "./UserResponse";
 
 
 @Resolver((of) => UserSchema)
@@ -28,7 +29,7 @@ export class UserResolver {
       if (!!err) {
         return {
           success: false,
-          error: "Invalid Credetials",
+          error: "Invalid Credentials",
           data: null,
         };
       } else {
